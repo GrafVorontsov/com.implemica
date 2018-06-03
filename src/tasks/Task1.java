@@ -12,6 +12,7 @@ public class Task1 {
 
         try {
             number = scanner.nextInt();  //get number from input
+
             Task1 task1 = new Task1();
 
             System.out.println(task1.generateParens(number));  //get correct parenthesis combination
@@ -19,15 +20,18 @@ public class Task1 {
         }catch (InputMismatchException i){  //catch the exception if input Wrong value
             System.out.println("Wrong value");
             main(args); //reload method
+        }catch (NegativeArraySizeException n){  //catch the exception if input Negative value
+            System.out.println("Negative value");
+            main(args); //reload method
         }
     }
 
-    public void addParen(ArrayList<String> list, int leftRem, int rightRem, char[] str, int count) {
+    private void addParen(ArrayList<String> list, int leftRem, int rightRem, char[] str, int count) {
         if (leftRem < 0 || rightRem < leftRem) return; // not corrected
 
         if (leftRem == 0 && rightRem == 0) { /* no more left brackets */
-            String s = String.copyValueOf(str);
-            list.add(s);
+            String s = String.copyValueOf(str);  //get combinations parentheses
+            list.add(s);  //add to ArrayList
         } else {
             /* add left parenthesis, if left parenthesis exist */
             if (leftRem > 0) {
@@ -42,9 +46,9 @@ public class Task1 {
             }
         }
     }
-    public ArrayList<String> generateParens(int count) {
-        char[] str = new char[count * 2];
-        ArrayList<String> list = new ArrayList<String>();
+    private ArrayList<String> generateParens(int count) {
+        char[] str = new char[count * 2];  //create char array for ()
+        ArrayList<String> list = new ArrayList<>();
         addParen(list, count, count, str, 0);
         return list;
     }

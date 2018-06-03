@@ -9,18 +9,18 @@ import java.math.BigInteger;
 
 public class Task3 {
     private static BigInteger calculateFactorial(int n){
-        BigInteger result = BigInteger.ONE;
-        for (int i = 1; i <= n; i ++){
+        BigInteger result = BigInteger.ONE;  //default value if n=0
+        for (int i = 1; i <= n; i++){
             result = result.multiply(BigInteger.valueOf(i));
         }
         return result;
     }
 
-    static int  calculateSum(int f){
-        char[] arrayNumbers = calculateFactorial(f).toString().toCharArray();
+    private static int  calculateSum(int f){
+        char[] arrayNumbers = calculateFactorial(f).toString().toCharArray();  //get char array from factorial string value
         int sum = 0;
         for (char num: arrayNumbers) {
-            sum += Character.getNumericValue(num);
+            sum += Character.getNumericValue(num);  //sum all numbers from array
         }
         return sum;
     }
