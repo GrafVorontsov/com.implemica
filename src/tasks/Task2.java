@@ -1,27 +1,98 @@
 package tasks;
 
+/*
+*
+*s [the number of tests <= 10]
+n [the number of cities <= 10000]
+NAME [city name]
+p [the number of neighbors of city NAME]
+nr cost [nr - index of a city connected to NAME (the index of the first city is 1)]
+           [cost - the transportation cost]
+r [the number of paths to find <= 100]
+NAME1 NAME2 [NAME1 - source, NAME2 - destination]
+[empty line separating the tests]
+
+* */
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Task2 {
-    private static final Graph.Edge[] GRAPH = {
-            new Graph.Edge("gdansk", "bydgoszcz", 1),
-            new Graph.Edge("gdansk", "torun", 3),
-            new Graph.Edge("bydgoszcz", "torun", 1),
-            new Graph.Edge("bydgoszcz", "warszawa", 4),
-            new Graph.Edge("torun", "warszawa", 1),
-
-    };
 
     public static void main(String[] args) {
-        Graph g = new Graph(GRAPH);
+
+        String FILE_NAME = "E:\\M&M\\myWorks\\graph.txt";
+
+        Graph.Edge[] GRAPH_array = graphFromFile(FILE_NAME);
+
+        Graph g = new Graph(GRAPH_array);
         g.distance("gdansk", "warszawa");
         System.out.println();
         g.distance("bydgoszcz", "warszawa");
+    }
+
+    private static Graph.Edge[] graphFromFile(String FILE_NAME){
+        List<String> lines = null;
+        HashMap<Integer, String> cities_name = new HashMap<>(); //for city name-index
+
+        int cnt = 1;
+        try {
+            lines = Files.readAllLines(Paths.get(FILE_NAME), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert lines != null;
+
+        ArrayList<Graph.Edge> GRAPH = new ArrayList<>(); //create craph
+
+        for (String city : lines) {
+            if (city.matches("^[a-zA-Z]+$")) {
+                cities_name.put(cnt++, city); //add city name and index
+            }
+        }
+
+        int k = 0;
+
+        for (int i = 0; i < lines.size(); i++){
+            if (i == 0) { int s = Integer.parseInt(lines.get(i));} //the number of tests}
+            if (i == 1) { int n = Integer.parseInt(lines.get(i));}//the number of cities}
+
+            if (lines.get(i).matches("^[a-zA-Z]+$")){
+                String fromCity = lines.get(i);
+
+                int relation = Integer.parseInt(lines.get(++i)); //the number of neighbors of city
+                for (int z = 1; z <= relation; z++) {
+                    String[] t1 = lines.get(i+z).split(" ");
+                    String toCity = "";
+                    for (Map.Entry<Integer, String> entry : cities_name.entrySet()) {
+                        if (Integer.parseInt(t1[0])== entry.getKey()){
+                            toCity = entry.getValue(); //extract city name by index
+                        }
+                    }
+                    int dist = Integer.parseInt(t1[1]); //distanse
+
+                    GRAPH.add(k, new Graph.Edge(fromCity, toCity, dist) ); //add Graph.Edge to array
+                    k++;
+                }
+            }
+        }
+        Graph.Edge[] GRAPH_array = new Graph.Edge[GRAPH.size()];
+        return GRAPH.toArray(GRAPH_array);
     }
 }
 
 class Graph {
     private final Map<String, Vertex> graph; // mapping of vertex names to Vertex objects, built from a set of Edges
+
+    @Override
+    public String toString() {
+        return "Graph{" +
+                "graph=" + graph.entrySet() +
+                '}' ;
+    }
 
     /** One edge of the graph (only used by Graph constructor) */
     static class Edge {
