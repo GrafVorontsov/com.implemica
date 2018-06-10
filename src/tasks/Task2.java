@@ -1,19 +1,5 @@
 package tasks;
 
-/*
-*
-*s [the number of tests <= 10]
-n [the number of cities <= 10000]
-NAME [city name]
-p [the number of neighbors of city NAME]
-nr cost [nr - index of a city connected to NAME (the index of the first city is 1)]
-           [cost - the transportation cost]
-r [the number of paths to find <= 100]
-NAME1 NAME2 [NAME1 - source, NAME2 - destination]
-[empty line separating the tests]
-
-* */
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -72,7 +58,7 @@ public class Task2 {
                             toCity = entry.getValue(); //extract city name by index
                         }
                     }
-                    int dist = Integer.parseInt(t1[1]); //distanse
+                    int dist = Integer.parseInt(t1[1]); //distance
 
                     GRAPH.add(k, new Graph.Edge(fromCity, toCity, dist) ); //add Graph.Edge to array
                     k++;
