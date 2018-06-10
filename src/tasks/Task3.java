@@ -16,7 +16,7 @@ public class Task3 {
         return result;
     }
 
-    private static int  calculateSum(int f){
+    public static int calculateSum(int f){
         char[] arrayNumbers = calculateFactorial(f).toString().toCharArray();  //get char array from factorial string value
         int sum = 0;
         for (char num: arrayNumbers) {
